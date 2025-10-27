@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* smooth scrolling and top padding for sticky header */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* header height + margin */
+}
+
+.h-85-vh {
+  height: 85vh;
+}
+
+.bg-green-500 {
+  background: #2563eb;
+}
+
+.bg-green-600 {
+  background: #2563eb;
+}
