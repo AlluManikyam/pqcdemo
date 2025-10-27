@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import pqcImage from "../assets/hero-4.png";
+import pqcImage from "../assets/what.png";
 
 export default function WhatIsPQC({ sec }) {
   const v = localStorage.getItem("pqc-dark");

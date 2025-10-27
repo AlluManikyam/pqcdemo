@@ -17,7 +17,7 @@ export const sections = [
       ],
     },
     buttonText: "Know More",
-    buttonLink: "/nist",
+    buttonLink: "/why",
   },
   {
     id: "what",
@@ -91,6 +91,6 @@ export const sections = [
       },
     ],
     buttonText: "Know More",
-    buttonLink: "/migration",
+    buttonLink: "/nist",
   },
 ];

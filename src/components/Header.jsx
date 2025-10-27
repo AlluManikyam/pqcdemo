@@ -1,27 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import { Menu, X } from "react-feather";
-import { FaSun, FaMoon } from "react-icons/fa"; // <-- added react-icons
+import { FaSun, FaMoon } from "react-icons/fa";
 import Logo from "../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const navigation = useNavigate()
+  const navigate = useNavigate();
   const [dark, setDark] = useState(() => {
     try {
       const v = localStorage.getItem("pqc-dark");
-      return v === null ? false : JSON.parse(v);
+      return v ? JSON.parse(v) : false;
     } catch {
       return false;
     }
   });
-
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
-    if (dark) root.classList.add("dark");
-    else root.classList.remove("dark");
+    dark ? root.classList.add("dark") : root.classList.remove("dark");
     try {
       localStorage.setItem("pqc-dark", JSON.stringify(dark));
     } catch {}
@@ -36,82 +34,94 @@ export default function Header() {
   ];
 
   return (
-    <header className="flex justify-between items-center px-6 md:px-12 py-4 bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
-      {/* Logo */}
-      <div className="flex items-center space-x-3 cursor-pointer" onClick={()=>navigation('/')}>
-        <img src={Logo} alt="PQC Logo" className="w-10 h-10" />
-        <h1 className="text-xl font-bold text-blue-600 dark:text-blue-300">
-          PQC Knowledge Portal
-        </h1>
-      </div>
+    <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-[0_2px_8px_rgba(0,0,0,0.05)] border-b border-gray-200/50 dark:border-gray-700/50 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-3 flex justify-between items-center">
+        {/* Logo Section */}
+        <div
+          className="flex items-center space-x-3 cursor-pointer group"
+          onClick={() => navigate("/")}
+        >
+          <img
+            src={Logo}
+            alt="PQC Logo"
+            className="w-10 h-10 transition-transform group-hover:scale-105"
+          />
+          <h1 className="text-lg md:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            <span className="text-blue-600 dark:text-blue-400">PQC</span> Knowledge Portal
+          </h1>
+        </div>
 
-      {/* Desktop Menu (≥992px) */}
-      <nav className="hidden desktop:flex items-center space-x-6">
-        {navLinks.map((link) => (
-          <ScrollLink
-            key={link.id}
-            to={link.id}
-            smooth={true}
-            duration={400}
-            offset={-100}
-            className="cursor-pointer hover:text-blue-500"
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center space-x-8">
+          {navLinks.map((link) => (
+            <ScrollLink
+              key={link.id}
+              to={link.id}
+              smooth={true}
+              duration={400}
+              offset={-80}
+              className="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              {link.label}
+            </ScrollLink>
+          ))}
+
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setDark((d) => !d)}
+            aria-label="Toggle dark mode"
+            className="ml-4 p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 transition-all"
           >
-            {link.label}
-          </ScrollLink>
-        ))}
+            {dark ? (
+              <FaSun className="text-yellow-400 transition-transform hover:rotate-12" />
+            ) : (
+              <FaMoon className="text-gray-800 dark:text-gray-200 transition-transform hover:-rotate-12" />
+            )}
+          </button>
+        </nav>
 
-        <button
-          onClick={() => setDark((d) => !d)}
-          aria-label="Toggle dark mode"
-          className="ml-4 px-3 py-1 rounded-md border bg-gray-100 dark:bg-gray-700 border-gray-200 dark:border-gray-600 flex items-center justify-center"
-        >
-          {dark ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-800" />}
-        </button>
-      </nav>
+        {/* Mobile Icons */}
+        <div className="flex items-center space-x-2 lg:hidden">
+          <button
+            onClick={() => setDark((d) => !d)}
+            aria-label="Toggle dark mode"
+            className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 transition"
+          >
+            {dark ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-800 dark:text-gray-200" />}
+          </button>
 
-      {/* Mobile Hamburger (<992px) */}
-      <div className="desktop:hidden flex items-center space-x-2">
-        <button
-          onClick={() => setDark((d) => !d)}
-          aria-label="Toggle dark mode"
-          className="px-3 py-1 rounded-md border bg-gray-100 dark:bg-gray-700 border-gray-200 dark:border-gray-600 flex items-center justify-center"
-        >
-          {dark ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-800" />}
-        </button>
-
-        <button
-          onClick={() => setMenuOpen(true)}
-          className="p-2 rounded-md bg-gray-100 dark:bg-gray-700"
-          aria-label="Open menu"
-        >
-          <Menu size={24} />
-        </button>
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+            aria-label="Open menu"
+          >
+            <Menu size={24} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-end z-50"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-end z-50"
           onClick={() => setMenuOpen(false)}
         >
           <div
-            className="bg-white dark:bg-gray-900 w-64 h-full shadow-xl transform transition-transform duration-300 ease-in-out p-6 flex flex-col space-y-6"
+            className="bg-white dark:bg-gray-900 w-72 h-full shadow-xl transform transition-transform duration-300 ease-in-out p-6 flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-blue-600 dark:text-blue-300">
-                PQC Menu
-              </h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg font-semibold text-blue-600 dark:text-blue-400">Menu</h2>
               <button
                 onClick={() => setMenuOpen(false)}
                 aria-label="Close menu"
-                className="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
+                className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <X size={22} />
               </button>
             </div>
 
-            <nav className="flex flex-col space-y-4">
+            <nav className="flex flex-col space-y-5">
               {navLinks.map((link) => (
                 <ScrollLink
                   key={link.id}
@@ -120,20 +130,28 @@ export default function Header() {
                   duration={400}
                   offset={-80}
                   onClick={() => setMenuOpen(false)}
-                  className="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                  className="cursor-pointer text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 text-base font-medium transition-colors"
                 >
                   {link.label}
                 </ScrollLink>
               ))}
             </nav>
 
-            <div className="pt-6 mt-auto border-t border-gray-200 dark:border-gray-700">
+            <div className="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700">
               <button
                 onClick={() => setDark((d) => !d)}
                 aria-label="Toggle dark mode"
-                className="w-full px-3 py-2 rounded-md border bg-gray-100 dark:bg-gray-700 border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                className="w-full py-2 rounded-lg border bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600 flex items-center justify-center transition"
               >
-                {dark ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-800" />}
+                {dark ? (
+                  <>
+                    <FaSun className="text-yellow-400 mr-2" /> Light Mode
+                  </>
+                ) : (
+                  <>
+                    <FaMoon className="text-gray-800 dark:text-gray-200 mr-2" /> Dark Mode
+                  </>
+                )}
               </button>
             </div>
           </div>

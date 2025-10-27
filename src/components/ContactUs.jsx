@@ -25,7 +25,7 @@ export default function ContactUs() {
   const bgColor = v === null ? "bg-white" : "bg-dark";
 
   return (
-    <section className={`w-full py-20 px-6 ${bgColor} flex justify-center`}>
+    <section id={"contact"} className={`w-full py-20 px-6 ${bgColor} flex justify-center`}>
       <div className="w-full max-w-6xl bg-white grid grid-cols-1 md:grid-cols-2 shadow-lg rounded-lg overflow-hidden">
         {/* LEFT SIDE – Contact Info */}
         <div className="bg-blue-50 p-10 flex flex-col justify-center space-y-10">

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import pqcImage from "../assets/pqc-team.jpg";
+import nistImage from "../assets/nist.jpg";
 
 export default function NISTDocs({sec}) {
   const v = localStorage.getItem("pqc-dark")
@@ -39,7 +39,7 @@ export default function NISTDocs({sec}) {
         {/* Right Column - Image */}
         <div>
           <img
-            src={pqcImage}
+            src={nistImage}
             alt="Team working together"
             className="rounded-lg shadow-lg w-full object-cover"
           />
